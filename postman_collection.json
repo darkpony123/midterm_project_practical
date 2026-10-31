@@ -1,0 +1,448 @@
+{
+  "info": {
+    "name": "Space Bounty Hunters API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "huntId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Criminals",
+      "item": [
+        {
+          "name": "List all criminals",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/criminals/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "criminals",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter: min_reward + armed + sort -reward",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/criminals/?min_reward=5000&armed=true&sort=-reward",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "criminals",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "min_reward",
+                  "value": "5000"
+                },
+                {
+                  "key": "armed",
+                  "value": "true"
+                },
+                {
+                  "key": "sort",
+                  "value": "-reward"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter: max_reward",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/criminals/?max_reward=2000000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "criminals",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "max_reward",
+                  "value": "2000000"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter: has_crew",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/criminals/?has_crew=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "criminals",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "has_crew",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter: escape_master + sort reward",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/criminals/?escape_master=true&sort=reward",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "criminals",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "escape_master",
+                  "value": "true"
+                },
+                {
+                  "key": "sort",
+                  "value": "reward"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criminal details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/criminals/1/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "criminals",
+                "1",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hunts",
+      "item": [
+        {
+          "name": "List all hunt logs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/hunts/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "hunts",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hunt logs by criminal_id",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/hunts/?criminal_id=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "hunts",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "criminal_id",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create hunt log",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/hunts/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "hunts",
+                ""
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"criminal_id\": 3,\n  \"success\": false,\n  \"notes\": \"Target escaped through an asteroid field.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('huntId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get hunt log",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/hunts/{{huntId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "hunts",
+                "{{huntId}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update hunt log (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/hunts/{{huntId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "hunts",
+                "{{huntId}}",
+                ""
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"success\": true,\n  \"notes\": \"Came back and captured him.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete hunt log",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/hunts/{{huntId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "hunts",
+                "{{huntId}}",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invalid requests",
+      "item": [
+        {
+          "name": "Criminal not found (404)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/criminals/999/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "criminals",
+                "999",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Invalid sort value (400)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/criminals/?sort=name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "criminals",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "name"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create hunt for missing criminal (400)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/hunts/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "hunts",
+                ""
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"criminal_id\": 999,\n  \"success\": true,\n  \"notes\": \"Ghost\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create hunt with invalid body (422)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/hunts/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "hunts",
+                ""
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"criminal_id\": \"abc\",\n  \"success\": \"maybe\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get deleted hunt log (404)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/hunts/{{huntId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "hunts",
+                "{{huntId}}",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
